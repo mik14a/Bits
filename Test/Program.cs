@@ -12,14 +12,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Test
 {
 #if NET35 || NET452 || NET462 || NET472 || NET48
-    class Program
+    class Program : TestRunner
     {
         static void Main(string[] args) {
             Console.WriteLine($"Running [{Assembly.GetEntryAssembly().GetName()}]");
-            var program = new TestRunner();
+            var program = new Program();
             program.Run(Assembly.GetEntryAssembly());
         }
     }
 #endif
-
 }
