@@ -60,7 +60,7 @@ namespace System.ComponentModel.Plugin
             Assembly = assembly;
             Type = type;
             var attribute = Type.GetCustomAttribute<PluginAttribute>();
-            Name = attribute?.Name;
+            Name = attribute?.Name ?? Type.Name;
             Description = attribute?.Description;
         }
 
