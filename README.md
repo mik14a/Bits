@@ -9,7 +9,8 @@ Copy and past from this repogitory.
 
 ## Libraries
 
-| Name                         | Why?                                         |
+| Name                         | Description                                  |
 |------------------------------|----------------------------------------------|
-| System.ComponentModel.Plugin | Needed simple plugin support to application. |
+| System.ComponentModel.Plugin | Simple plugin support to application.        |
+| System.Text.Humanize         | To human readable number with binary prefix. |
 
