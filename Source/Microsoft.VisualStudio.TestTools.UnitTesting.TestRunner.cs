@@ -77,30 +77,47 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance), $"{nameof(instance)} is null.");
 
-            Trace.WriteLine($"{instance.GetType()}");
+            Trace.WriteLine($"Class [{instance.GetType()}]");
             var methods = instance.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance);
             var initializes = methods.Where(methodInfo => methodInfo.GetCustomAttribute<TestInitializeAttribute>() != null).ToArray();
             var cleanups = methods.Where(methodInfo => methodInfo.GetCustomAttribute<TestCleanupAttribute>() != null).ToArray();
             methods = methods.Where(methodInfo => methodInfo.GetCustomAttribute<TestMethodAttribute>() != null).ToArray();
-            initializes.All(methodInfo => RunTestMethod(instance, methodInfo));
-            methods.All(methodInfo => RunTestMethod(instance, methodInfo));
-            cleanups.All(methodInfo => RunTestMethod(instance, methodInfo));
+            if (initializes.All(methodInfo => RunTestInitialize(instance, methodInfo))) {
+                methods.All(methodInfo => RunTestMethod(instance, methodInfo));
+                cleanups.All(methodInfo => RunTestCleanup(instance, methodInfo));
+            }
+        }
+
+        static bool RunTestInitialize(object instance, MethodInfo methodInfo) {
+            Trace.WriteLine($"  TestInitialize [{methodInfo}]");
+            return RunTestMethodInternal(instance, methodInfo);
         }
 
         static bool RunTestMethod(object instance, MethodInfo methodInfo) {
+            Trace.WriteLine($"  TestMethod [{methodInfo}]");
+            return RunTestMethodInternal(instance, methodInfo);
+        }
+
+        static bool RunTestCleanup(object instance, MethodInfo methodInfo) {
+            Trace.WriteLine($"  TestCleanup [{methodInfo}]");
+            return RunTestMethodInternal(instance, methodInfo);
+        }
+
+        static bool RunTestMethodInternal(object instance, MethodInfo methodInfo) {
             if (instance == null)
                 throw new ArgumentNullException(nameof(instance), $"{nameof(instance)} is null.");
             if (methodInfo == null)
                 throw new ArgumentNullException(nameof(methodInfo), $"{nameof(methodInfo)} is null.");
 
-            Trace.WriteLine($" > {methodInfo.ToString()}");
             var expectedExceptions = methodInfo.GetCustomAttributes<ExpectedExceptionAttribute>().ToArray();
             try {
                 var methodCall = Expression.Call(Expression.Constant(instance), methodInfo);
                 var testMethod = Expression.Lambda<Action>(methodCall).Compile();
                 testMethod();
-            } catch (Exception ex) when (expectedExceptions.Any(e => e.ExceptionType == ex.GetType())) { }
-            return true;
+                return true;
+            } catch (Exception ex) when (expectedExceptions.Any(e => e.ExceptionType == ex.GetType())) {
+                return false;
+            }
         }
     }
 }
