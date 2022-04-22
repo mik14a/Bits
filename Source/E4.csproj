@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>Slight</AssemblyName>
     <TargetFrameworks>net35;net452;net462;net472;net48;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <AssemblyName>E4</AssemblyName>
     <RootNamespace></RootNamespace>
   </PropertyGroup>
 

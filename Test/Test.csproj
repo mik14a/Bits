@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Source\Slight.csproj" />
+    <ProjectReference Include="..\Source\E4.csproj" />
   </ItemGroup>
 
 </Project>
