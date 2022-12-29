@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test
 {
-#if NET35 || NET452 || NET462 || NET472 || NET48
     class Program : TestRunner
     {
         static void Main(string[] args) {
@@ -20,5 +19,4 @@ namespace Test
             program.Run(Assembly.GetEntryAssembly());
         }
     }
-#endif
 }

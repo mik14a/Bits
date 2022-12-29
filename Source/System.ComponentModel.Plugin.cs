@@ -83,12 +83,7 @@ namespace System.ComponentModel.Plugin
             }
 
             var plugins = new List<PluginInfo<T>>();
-#if NET35
-            var pluginFiles = Directory.GetFiles(path, searchPattern, searchOption);
-#else 
-
             var pluginFiles = Directory.EnumerateFiles(path, searchPattern, searchOption);
-#endif
             foreach (var pluginFile in pluginFiles) {
                 var assembly = Assembly.LoadFrom(pluginFile);
                 foreach (var type in assembly.GetTypes()) {

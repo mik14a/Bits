@@ -29,11 +29,7 @@ namespace System.Text.Tokenization
         public RegexOptions RegexOptions { get; }
 
         /// <summary>Collection of token definition.</summary>
-#if NET35
-        public IList<TokenDefinition<TokenType>> TokenDefinitions {
-#else
         public IReadOnlyList<TokenDefinition<TokenType>> TokenDefinitions {
-#endif
             get { return tokenDefinitions; }
         }
 

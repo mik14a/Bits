@@ -13,21 +13,6 @@ using System.Reflection;
 
 namespace Microsoft.VisualStudio.TestTools.UnitTesting
 {
-#if NET35
-    class TestClassAttribute : Attribute { }
-
-    class TestInitializeAttribute : Attribute { }
-
-    class TestCleanupAttribute : Attribute { }
-
-    class TestMethodAttribute : Attribute { }
-
-    class ExpectedExceptionAttribute : Attribute
-    {
-        public Type ExceptionType { get; }
-    }
-#endif
-
     /// <summary>
     /// The TestRunner.
     /// </summary>
