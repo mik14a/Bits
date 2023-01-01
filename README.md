@@ -15,6 +15,7 @@ Copy and past from this repository.
 | System.Text.Humanize                      | To human readable number with binary prefix. |
 | System.Text.Tokenization.Tokenizer        | Simple tokenizer.                            |
 | System.Text.Tokenization.TokenizerFactory | Factory of tokenizer.                        |
+| System.Scripting.Calculator               | Simple calculator                            |
 
 ### System.Text.Tokenization.Tokenizer
 
@@ -38,6 +39,12 @@ var tokenizer = new TokenizerFactory<int>()
     .With(1, @"\s+");
 var tokens = tokenizer.Tokenize(message);
 var words = tokens.Where(t => t.Type == 0);
+```
+
+### System.Scripting.Calculator
+
+```cs
+Console.WriteLine(Calculator.Calc("1 + 2 + 3 + 4"));
 ```
 
 ## License
