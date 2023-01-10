@@ -50,7 +50,7 @@ namespace System.Scripting
 
             public static IEnumerable<Token<TokenType>> Parse(string expression) {
                 var stack = new Stack<Token<TokenType>>();
-                var tokens = _tokenizer.Tokenize(expression).Where(t => t.Type != TokenType.Sp);
+                var tokens = Tokenizer.Tokenize(definitions, expression).Where(t => t.Type != TokenType.Sp);
                 foreach (var token in tokens) {
                     if (token.Type == TokenType.Num) {
                         yield return token;
@@ -71,14 +71,14 @@ namespace System.Scripting
             }
 
             /// <summary>Tokenizer factory.</summary>
-            static readonly TokenizerFactory<TokenType> _tokenizer
-                = new TokenizerFactory<TokenType>(RegexOptions.None)
-                    .With(TokenType.Num, @"[1-9][0-9]*")
-                    .With(TokenType.Add, @"[+]")
-                    .With(TokenType.Sub, @"[-]")
-                    .With(TokenType.Mul, @"[*]")
-                    .With(TokenType.Div, @"[/]")
-                    .With(TokenType.Sp, @"\s+");
+            static readonly TokenDefinition<TokenType>[] definitions = new[] {
+                TokenDefinition.Create(TokenType.Num, @"[1-9][0-9]*"),
+                TokenDefinition.Create(TokenType.Add, @"[+]"),
+                TokenDefinition.Create(TokenType.Sub, @"[-]"),
+                TokenDefinition.Create(TokenType.Mul, @"[*]"),
+                TokenDefinition.Create(TokenType.Div, @"[/]"),
+                TokenDefinition.Create(TokenType.Sp, @"\s+"),
+            };
 
             /// <summary>Numeric operator.</summary>
             static readonly Dictionary<TokenType, Func<int, int, int>> _operator
