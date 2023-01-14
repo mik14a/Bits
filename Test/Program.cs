@@ -7,16 +7,24 @@
 
 using System;
 using System.Reflection;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test
 {
-    class Program : TestRunner
+    class Program
     {
         static void Main(string[] args) {
             Console.WriteLine($"Running [{Assembly.GetEntryAssembly().GetName()}]");
             var program = new Program();
             program.Run(Assembly.GetEntryAssembly());
+        }
+
+        void Run(Assembly assembly) {
+            var testRunner = new TestRunner();
+            testRunner.Run(assembly);
+            var benchmarkRunner = new BenchmarkRunner();
+            benchmarkRunner.Run(assembly);
         }
     }
 }

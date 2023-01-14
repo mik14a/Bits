@@ -9,13 +9,52 @@ Copy and past from this repository.
 
 ## Libraries
 
-| Name                                      | Description                                  |
-|-------------------------------------------|----------------------------------------------|
-| System.ComponentModel.Plugin              | Simple plugin support to application.        |
-| System.Text.Humanize                      | To human readable number with binary prefix. |
-| System.Text.Tokenization.Tokenizer        | Simple tokenizer.                            |
-| System.Text.Tokenization.TokenizerFactory | Factory of tokenizer.                        |
-| System.Scripting.Calculator               | Simple calculator                            |
+| Name                                                         | Description                                  |
+|--------------------------------------------------------------|----------------------------------------------|
+| Microsoft.VisualStudio.TestTools.UnitTesting.BenchmarkRunner | Benchmark runner.                             |
+| System.ComponentModel.Plugin                                 | Simple plugin support to application.        |
+| System.Text.Humanize                                         | To human readable number with binary prefix. |
+| System.Text.Tokenization.Tokenizer                           | Simple tokenizer.                            |
+| System.Text.Tokenization.TokenizerFactory                    | Factory of tokenizer.                        |
+| System.Scripting.Calculator                                  | Simple calculator.                            |
+
+### Microsoft.VisualStudio.TestTools.UnitTesting.BenchmarkRunner
+
+Source
+
+```cs
+[BenchmarkClass]
+class RandomBenchmark
+{
+    [BenchmarkMethod]
+    public void DefaultBenchmark() {
+        var generator = new Random();
+        _ = Enumerable.Repeat(generator, 100000).Select(r => r.Next()).ToArray();
+    }
+    [BenchmarkMethod]
+    public void RNGCryptoBenchmark() {
+        var generator = RandomNumberGenerator.Create("System.Security.Cryptography.RNGCryptoServiceProvider");
+        var buffer = new byte[sizeof(int)];
+        _ = Enumerable.Repeat(generator, 100000).Select(r => { r.GetBytes(buffer); return buffer; }).Select(b => BitConverter.ToInt32(b, 0)).ToArray();
+    }
+}
+
+var benchmarkRunner = new BenchmarkRunner();
+benchmarkRunner.Run(Assembly.GetEntryAssembly());
+```
+
+Output
+
+```console
+Start benchmark assembly [ Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null ].
+  Start benchmark class [ RandomBenchmark ]: Instancing 636 Ticks.
+    Start benchmark [ DefaultBenchmark ] for 100 times.
+    End benchmark [ DefaultBenchmark ]: Total: 328.43 Milliseconds, Average: 3.28 Milliseconds, Min: 2.39 Milliseconds, Max: 5.74 Milliseconds.
+    Start benchmark [ RNGCryptoBenchmark ] for 100 times.
+    End benchmark [ RNGCryptoBenchmark ]: Total: 2.81 Seconds, Average: 28.09 Milliseconds, Min: 25.47 Milliseconds, Max: 33.08 Milliseconds.
+  End benchmark: Total 3.14 Seconds.
+End benchmark.
+```
 
 ### System.Text.Tokenization.Tokenizer
 
