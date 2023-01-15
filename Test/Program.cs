@@ -15,12 +15,12 @@ namespace Test
     class Program
     {
         static void Main(string[] args) {
-            Console.WriteLine($"Running [{Assembly.GetEntryAssembly().GetName()}]");
             var program = new Program();
             program.Run(Assembly.GetEntryAssembly());
         }
 
         void Run(Assembly assembly) {
+            Console.WriteLine($"Program: Running [ {assembly} ]");
             var testRunner = new TestRunner();
             testRunner.Run(assembly);
             var benchmarkRunner = new BenchmarkRunner();
